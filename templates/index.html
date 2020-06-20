@@ -28,7 +28,7 @@
         <!-- Post--> 
         {% for obj in object_list %}
         <div class="row d-flex align-items-stretch">
-          {% if not forloop.first and not forloop.last %}
+          {% if not forloop.counter|divisibleby:2 %}
             <div class="image col-lg-5"><img src="{{obj.thumbnail.url}}" alt="..."></div>
           {% endif %}
           <div class="text col-lg-7">
@@ -52,7 +52,7 @@
               </div>
             </div>
           </div>
-          {% if forloop.first or forloop.last %}
+          {% if forloop.counter|divisibleby:2 %}
           <div class="image col-lg-5"><img src="{{obj.thumbnail.url}}" alt="..."></div>
           {% endif %}
         </div>
