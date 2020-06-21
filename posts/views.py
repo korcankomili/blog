@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect
 from .models import Post,Author
@@ -12,6 +12,23 @@ def get_category_count():
             .annotate(Count('categories__title'))
         
     return queryset
+
+
+def search(request):
+    queryset = Post.objects.all()
+    query = request.GET.get('q')
+    if query:
+        queryset = queryset.filter(
+            Q(title__icontains=query) |
+            Q(overview__icontains=query)
+        ).distinct()
+    
+    context = {
+        'queryset': queryset
+    }
+
+    return render(request,'searchresults.html', context)
+
 
 
 def index(request):
